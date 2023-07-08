@@ -1,8 +1,8 @@
-
 from keras.applications import VGG16
 from keras import models
 from keras.optimizers import RMSprop
-from keras.layers import Dense, Flatten
+from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
+from keras.models import Sequential
 
 
 def freeze(conv_base, layer='block5_conv1'):
@@ -49,3 +49,33 @@ def VGG16_mod(input_shape, input_dim, train_generator, val_generator, freezed=Fa
                                 validation_steps=50)
     
     return history, model
+
+def simple_CNN(img_shape, n_labels, learning_rate, multiclass=None):
+    from tensorflow.keras.losses import CategoricalCrossentropy
+    from tensorflow.keras.optimizers import Adam
+
+    model = Sequential()
+    model.add(Conv2D(filters=16, kernel_size=(3,3), activation='relu', input_shape=img_shape))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    model.add(Conv2D(filters=32, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+
+    model.add(Flatten())
+    model.add(Dense(units=512, activation='relu'))
+    model.add(Dense(units=n_labels, activation='sigmoid'))
+
+    if multiclass:
+        loss = CategoricalCrossentropy()
+
+    model.compile(loss = loss,
+                optimizer=Adam(learning_rate=learning_rate),
+                metrics=['acc'])
+    
+    return model
