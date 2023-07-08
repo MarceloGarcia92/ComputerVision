@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from keras.preprocessing.image import ImageDataGenerator
 
-from models import simple_CNN
+from Utils.models import simple_CNN
 
 
 TRAIN_PATH = f'{os.getcwd()}/Data/plant-seedlings-classification/train'
