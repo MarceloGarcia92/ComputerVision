@@ -3,23 +3,23 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 
-def show_img_from_directory(path, n_labels, n_img=8):
+def show_img_from_directory(path, n_labels, n_img_label):
     total_img = list()
 
-    n = int(n_img/n_labels)
-
-    plt.figure(figsize=(n, n))
+    plt.figure(figsize=(n_labels, 4))
 
     for label in os.listdir(path):
         label_path = os.path.join(path, label)
-        print(label_path)
-        list_img = os.listdir(label_path)[:n]
+        if os.path.isdir(label_path):
+            list_img = os.listdir(label_path)[:n_img_label]
 
-        img_list = [os.path.join(label_path, img_path) for img_path in list_img]
-        total_img.extend(img_list)
+            img_list = [os.path.join(label_path, img_path) for img_path in list_img]
+            total_img.extend(img_list)
+        else:
+            print(f'{label_path} is not a folder')
 
     for idx, img in enumerate(total_img):
-        subplot = plt.subplot(n, n, idx+1)
+        subplot = plt.subplot(n_labels, 3, idx+1)
         subplot.axis('Off')
 
         img = mpimg.imread(img)
