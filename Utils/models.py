@@ -50,8 +50,7 @@ def VGG16_mod(input_shape, input_dim, train_generator, val_generator, freezed=Fa
     
     return history, model
 
-def simple_CNN(img_shape, n_labels, learning_rate, multiclass=None):
-    from tensorflow.keras.losses import CategoricalCrossentropy
+def simple_CNN(img_shape, n_labels, learning_rate, multiclass=None, binaryclass=None):
     from tensorflow.keras.optimizers import Adam
 
     model = Sequential()
@@ -72,7 +71,12 @@ def simple_CNN(img_shape, n_labels, learning_rate, multiclass=None):
     model.add(Dense(units=n_labels, activation='sigmoid'))
 
     if multiclass:
+        from tensorflow.keras.losses import CategoricalCrossentropy
         loss = CategoricalCrossentropy()
+
+    if binaryclass:
+        from tensorflow.keras.losses import BinaryCrossentropy
+        loss = BinaryCrossentropy()
 
     model.compile(loss = loss,
                 optimizer=Adam(learning_rate=learning_rate),

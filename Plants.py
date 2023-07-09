@@ -6,7 +6,6 @@ from keras.preprocessing.image import ImageDataGenerator
 
 from Utils.models import simple_CNN
 
-
 TRAIN_PATH = f'{os.getcwd()}/Data/plant-seedlings-classification/train'
 EXAMPLE_PATH = f'{TRAIN_PATH}/Sugar beet/6d579671c.png'
 LEARNING_RATE = 0.001
